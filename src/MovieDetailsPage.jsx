@@ -143,7 +143,7 @@ export default function MovieDetailPage() {
 
   const collectionName = movie?.belongs_to_collection?.name;
   const collectionNameUrl = collectionName
-    .replaceAll(' ', '-')
+    ?.replaceAll(' ', '-')
     .replaceAll('/', '-');
   const collectionId = movie?.belongs_to_collection?.id;
 
