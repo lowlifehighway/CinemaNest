@@ -39,7 +39,7 @@
   background: var(--c), var(--r1), var(--r2), var(--c), var(--r1), var(--r2),
     var(--c), var(--r1), var(--r2);
   background-repeat: no-repeat;
-  animation: loader 1s infinite alternate;
+  animation: loader 0.9s infinite alternate;
 }
 @keyframes loader {
   0%,

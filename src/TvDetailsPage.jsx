@@ -170,6 +170,7 @@ export default function TvDetailPage() {
     setMedia(param);
   }
   function getBackgroundColor(voteAverage) {
+    if (voteAverage === 0) return ''; // 0
     if (voteAverage >= 9.0) return 'darkgreen'; // 9 - 10
     if (voteAverage >= 7.0) return 'green'; // 7 - 9
     if (voteAverage >= 5.0) return 'yellow'; // 5 - 7
@@ -237,8 +238,15 @@ export default function TvDetailPage() {
           </ul>
           <div className="rating">
             TMDB Rating
-            <p>
-              {Math.round(tv.vote_average * 10) / 10} <span>/ 10</span>
+            <p className={`${tv.vote_average > 0 ? '' : 'no-rating'}`}>
+              {tv.vote_average > 0 ? (
+                <>
+                  {Math.round(tv.vote_average * 10) / 10}
+                  <span>/ 10</span>
+                </>
+              ) : (
+                'No rating'
+              )}
             </p>
           </div>
           {trailer ? (
@@ -331,12 +339,15 @@ export default function TvDetailPage() {
                     <span
                       className="season-rating"
                       style={{
+                        color: season.vote_average === 0 ? 'white' : '',
                         backgroundColor: getBackgroundColor(
                           season.vote_average
                         ),
                       }}
                     >
-                      {season.vote_average?.toFixed(1)}
+                      {season.vote_average === 0
+                        ? 'No Rating'
+                        : season.vote_average?.toFixed(1)}
                     </span>
                   </h3>
                   <p className="season-air-date">{season.air_date}</p>
@@ -369,12 +380,16 @@ export default function TvDetailPage() {
                             <p
                               className="episode-rating"
                               style={{
+                                color:
+                                  episode.vote_average === 0 ? 'white' : '',
                                 backgroundColor: getBackgroundColor(
-                                  episode.vote_average.toFixed(1)
+                                  episode.vote_average
                                 ),
                               }}
                             >
-                              {episode.vote_average.toFixed(1)}
+                              {episode.vote_average === 0
+                                ? ''
+                                : episode.vote_average?.toFixed(1)}
                             </p>
                           </strong>
                           <p style={{ opacity: '.5' }}>
@@ -386,9 +401,13 @@ export default function TvDetailPage() {
                             }).format(new Date(episode.air_date))}
                           </p>
                         </div>
-                        <p className="episode-runtime">
-                          {episode.runtime} minutes
-                        </p>
+                        {episode.runtime ? (
+                          <p className="episode-runtime">
+                            {episode.runtime} minutes
+                          </p>
+                        ) : (
+                          ''
+                        )}
 
                         <p>
                           {episode.episode_type === 'finale' ? 'finale' : null}
@@ -503,7 +522,7 @@ export default function TvDetailPage() {
             <h2>RECOMMENDATIONS</h2>
           </div>
           <div className="section-container">
-            <Items items={recommendations} />
+            <Items items={recommendations} origin={'recommendations'} />
           </div>
         </div>
       )}

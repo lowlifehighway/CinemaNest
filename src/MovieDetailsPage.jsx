@@ -177,8 +177,15 @@ export default function MovieDetailPage() {
           </ul>
           <div className="rating">
             TMDB Rating
-            <p>
-              {Math.round(movie.vote_average * 10) / 10} <span>/ 10</span>
+            <p className={`${movie.vote_average > 0 ? '' : 'no-rating'}`}>
+              {movie.vote_average > 0 ? (
+                <>
+                  {Math.round(movie.vote_average * 10) / 10}
+                  <span>/ 10</span>
+                </>
+              ) : (
+                'No rating'
+              )}
             </p>
           </div>
           {trailer ? (
@@ -319,6 +326,7 @@ export default function MovieDetailPage() {
           </div>
         </div>
       )}
+      {console.log(movie)}
       {/* RECOMMENDED */}
       {recommendations.length > 0 && (
         <div>
@@ -326,7 +334,7 @@ export default function MovieDetailPage() {
             <h2>RECOMMENDATIONS</h2>
           </div>
           <div className="section-container">
-            <Items items={recommendations} />
+            <Items items={recommendations} origin={'recommendations'} />
           </div>
         </div>
       )}

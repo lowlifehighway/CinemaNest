@@ -93,31 +93,28 @@ export default function Search() {
           <h2>Results</h2>
           <div>
             <button
-              className={results === 1 ? 'active' : ''}
               onClick={() => showResults(1)}
               disabled={movieResults.total_results === 0}
             >
-              <h3>
+              <h3 className={results === 1 ? 'active' : ''}>
                 Movies
                 <span>{movieResults.total_results || '0'}</span>
               </h3>
             </button>
             <button
-              className={results === 2 ? 'active' : ''}
               onClick={() => showResults(2)}
               disabled={tvResults.total_results === 0}
             >
-              <h3>
+              <h3 className={results === 2 ? 'active' : ''}>
                 Tv Shows
                 <span>{tvResults.total_results || '0'}</span>
               </h3>
             </button>
             <button
-              className={results === 3 ? 'active' : ''}
               onClick={() => showResults(3)}
               disabled={collectionResults.total_results === 0}
             >
-              <h3>
+              <h3 className={results === 3 ? 'active' : ''}>
                 Collections
                 <span>{collectionResults.total_results || '0'}</span>
               </h3>

@@ -4,7 +4,7 @@ import Loading from './Loading';
 import LeftRightArrows from './LeftRightArrows';
 import { imgPath, imgPlaceholder } from './Port';
 
-export default function Items({ items, media_type }) {
+export default function Items({ items, media_type, origin }) {
   const sectionRef = useRef(null);
 
   if (!Array.isArray(items) || items.length < 1) return <Loading />;
@@ -13,7 +13,12 @@ export default function Items({ items, media_type }) {
     <>
       <section className="section" ref={sectionRef}>
         {items.map((item) => (
-          <Item item={item} key={item.id} media_type={media_type} />
+          <Item
+            item={item}
+            key={item.id}
+            media_type={media_type}
+            origin={origin}
+          />
         ))}
         <LeftRightArrows arrowRef={sectionRef} />
       </section>
@@ -21,15 +26,25 @@ export default function Items({ items, media_type }) {
   );
 }
 
-function Item({ item, media_type }) {
+function Item({ item, media_type, origin }) {
   const name = item.title || item.name;
   const nameUrl = name.replaceAll(' ', '-').replaceAll('/', '-');
+
+  function fromRecommendations(e) {
+    if (origin === 'recommendations') {
+      e.preventDefault();
+      window.location.href = `/${item.media_type || media_type}/${nameUrl}/${
+        item.id
+      }`;
+    }
+  }
 
   return (
     <div className="column">
       <Link
         to={`/${item.media_type || media_type}/${nameUrl}/${item.id}`}
         className="card"
+        onClick={(e) => fromRecommendations(e)}
       >
         <figure>
           <img

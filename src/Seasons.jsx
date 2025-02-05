@@ -91,6 +91,7 @@ function Season({ seasonNum }) {
   }, [id, seasonNum]);
 
   function getBackgroundColor(voteAverage) {
+    if (voteAverage === 0) return ''; // 0
     if (voteAverage >= 9.0) return 'darkgreen'; // 9 - 10
     if (voteAverage >= 7.0) return 'green'; // 7 - 9
     if (voteAverage >= 5.0) return 'yellow'; // 5 - 7
@@ -121,12 +122,15 @@ function Season({ seasonNum }) {
                     <span
                       className="season-rating"
                       style={{
+                        color: season.vote_average === 0 ? 'white' : '',
                         backgroundColor: getBackgroundColor(
                           season.vote_average
                         ),
                       }}
                     >
-                      {season.vote_average.toFixed(1)}
+                      {season.vote_average === 0
+                        ? 'No Rating'
+                        : season.vote_average?.toFixed(1)}
                     </span>
                   </h3>
                   <p className="season-air-date">{season.air_date}</p>
@@ -159,12 +163,16 @@ function Season({ seasonNum }) {
                             <p
                               className="episode-rating"
                               style={{
+                                color:
+                                  episode.vote_average === 0 ? 'white' : '',
                                 backgroundColor: getBackgroundColor(
-                                  episode.vote_average.toFixed(1)
+                                  episode.vote_average
                                 ),
                               }}
                             >
-                              {episode.vote_average.toFixed(1)}
+                              {episode.vote_average === 0
+                                ? ''
+                                : episode.vote_average?.toFixed(1)}
                             </p>
                           </strong>
                           <p style={{ opacity: '.5' }}>
@@ -176,9 +184,13 @@ function Season({ seasonNum }) {
                             }).format(new Date(episode.air_date))}
                           </p>
                         </div>
-                        <p className="episode-runtime">
-                          {episode.runtime} minutes
-                        </p>
+                        {episode.runtime ? (
+                          <p className="episode-runtime">
+                            {episode.runtime} minutes
+                          </p>
+                        ) : (
+                          ''
+                        )}
 
                         <p>
                           {episode.episode_type === 'finale' ? 'finale' : null}
